@@ -2,276 +2,1334 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nice Girl App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nice Girl | Be Nature Be Better</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- حل مشكلة النوتش في الجوالات الحديثة -->
+    <meta name="theme-color" content="#1a4a9a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
+    <!-- خطوط Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* 1. Global Reset - منع الحركة الجانبية */
+        /* -------------------------------------------------------------------------- */
+        /* 1. CSS VARIABLES & RESET                                                   */
+        /* -------------------------------------------------------------------------- */
+        :root {
+            --primary: #1a4a9a;
+            --primary-light: #3a7bd5;
+            --accent: #ff4757;
+            --success: #2ed573;
+            --white: #ffffff;
+            --dark: #1e272e;
+            --light-bg: #f8faff;
+            --bg-grad: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass: rgba(255, 255, 255, 0.92);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-3d: 0 30px 60px rgba(0,0,0,0.12);
+            --shadow-light: 0 10px 30px rgba(0,0,0,0.08);
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; /* إزالة الدائرة الزرقاء عند اللمس */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        *::selection {
+            background-color: rgba(26, 74, 154, 0.2);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
             font-family: 'Cairo', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+            overflow-x: hidden;
+            padding-top: var(--safe-area-top);
+            padding-bottom: var(--safe-area-bottom);
         }
 
-        html, body {
+        /* -------------------------------------------------------------------------- */
+        /* 2. CUSTOM CURSOR & LOADER (مع تحسينات للجوال)                               */
+        /* -------------------------------------------------------------------------- */
+        #custom-cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        @media (max-width: 768px) {
+            #custom-cursor {
+                display: none;
+            }
+        }
+
+        .preloader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease, visibility 1s ease;
+            padding-top: var(--safe-area-top);
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            width: 150px;
+            animation: pulse 2s infinite;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 3. NAVIGATION (محسنة للجوال مع قائمة هامبرجر)                               */
+        /* -------------------------------------------------------------------------- */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100%;
-            overflow-x: hidden; /* منع اليمين واليسار */
-            background-color: #f8f9ff;
-            color: #1a4a9a;
-            touch-action: pan-y; /* السماح بالتمرير العمودي فقط */
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 5000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+            transition: var(--transition);
+            padding-top: max(15px, var(--safe-area-top));
         }
 
-        /* 2. Hero Section - مع معالجة الصورة */
+        .nav-brand img { 
+            height: 50px;
+            transition: var(--transition);
+        }
+
+        .nav-menu { 
+            display: flex; 
+            list-style: none; 
+            gap: 5px;
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            display: inline-block;
+        }
+
+        .nav-item a:hover, .nav-item a.active {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(26, 74, 154, 0.2);
+        }
+
+        /* قائمة الهامبرجر للجوال */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 6000;
+            width: 30px;
+            height: 20px;
+            justify-content: space-between;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(8.5px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-8.5px) rotate(-45deg);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 4. HERO SECTION (محسنة مع دعم النوتش)                                      */
+        /* -------------------------------------------------------------------------- */
         .hero {
-            position: relative;
-            width: 100%;
-            height: 60vh;
-            background-image: url('assets/hero-bg.jpg'); /* تأكد من وجود الصورة بهذا المسار */
-            background-size: cover;
-            background-position: center;
+            height: 100vh;
+            min-height: 700px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(45deg, #092c6b, #1a4a9a, #3a7bd5);
+            position: relative;
             overflow: hidden;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            box-shadow: 0 10px 30px rgba(26, 74, 154, 0.2);
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            margin-top: calc(50px + var(--safe-area-top));
         }
 
-        /* طبقة حماية فوق صورة الهيرو لضمان وضوح النص */
-        .hero::before {
-            content: '';
+        .hero-shapes {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(26, 74, 154, 0.4), rgba(0, 0, 0, 0.6));
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .hero-shapes span {
+            position: absolute;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
         }
 
         .hero-content {
-            position: relative;
-            z-index: 2;
+            z-index: 10;
             text-align: center;
-            color: white;
-            padding: 20px;
+            color: var(--white);
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .hero-content h1 {
-            font-size: 3rem;
+            font-size: 5.5rem;
             font-weight: 900;
-            margin-bottom: 5px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        /* 3. Floating Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 5%;
-            width: 90%;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(15px);
-            border-radius: 35px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.5);
+        .hero-content p {
+            font-size: 1.8rem;
+            font-weight: 300;
+            opacity: 0.9;
+            letter-spacing: 5px;
+            margin-bottom: 40px;
         }
 
-        .nav-item {
-            text-decoration: none;
-            color: #ccc;
-            font-size: 0.8rem;
-            font-weight: 700;
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 5. MENU SECTION (مع تحسين عرض الصور)                                       */
+        /* -------------------------------------------------------------------------- */
+        .section-container {
+            padding: 100px 5%;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 3.2rem;
+            color: var(--primary);
+            font-weight: 900;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 50px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 40px 25px 30px;
+            text-align: center;
+            position: relative;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(0,0,0,0.02);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: 0.3s;
+            height: 100%;
         }
 
-        .nav-item.active { color: #1a4a9a; }
-
-        /* 4. Menu Cards - 3D & Transparent Image Fix */
-        .menu-section {
-            padding: 40px 20px 100px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 30px;
-            padding: 20px;
-            margin-bottom: 80px; /* مساحة للصورة الطافية */
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
-            text-align: center;
-            border: 1px solid #f0f0f0;
-        }
-
-        .img-holder {
+        .product-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 120px;
-            margin-top: -90px;
+            height: 5px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-3d);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1;
+        }
+
+        .product-image {
+            max-width: 220px;
+            max-height: 180px;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
+            transition: var(--transition);
+            /* إزالة الخلفية من الصور */
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
+        }
+
+        .product-card:hover .product-image {
+            transform: rotate(-5deg) scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px; 
+            left: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        .badge.new {
+            background: var(--success);
+        }
+
+        .product-info {
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h3 { 
+            font-size: 1.8rem; 
+            margin-bottom: 10px; 
+            color: var(--primary);
+            min-height: 54px;
+            display: flex;
+            align-items: center;
             justify-content: center;
         }
 
-        .product-img {
-            width: 180px;
-            filter: drop-shadow(0 20px 20px rgba(0,0,0,0.15));
-            /* مسح الحواف والشفافية */
-            mix-blend-mode: darken; 
-            transition: 0.4s ease;
+        .product-info p { 
+            color: #666; 
+            font-size: 1rem; 
+            margin-bottom: 25px;
+            line-height: 1.6;
+            flex-grow: 1;
         }
 
-        .card h3 { font-size: 1.5rem; margin: 10px 0; font-weight: 800; }
-        .price { font-size: 1.6rem; color: #ff4757; font-weight: 900; display: block; margin: 10px 0; }
+        .price-tag {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--dark);
+            display: block;
+            margin-bottom: 25px;
+        }
 
         .order-btn {
-            background: #1a4a9a;
+            background: var(--primary);
             color: white;
-            padding: 12px 30px;
+            padding: 15px 40px;
+            border-radius: 100px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(26, 74, 154, 0.3);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .order-btn:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 71, 87, 0.3);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 6. INTERACTIVE MAP (محسنة للجوال)                                          */
+        /* -------------------------------------------------------------------------- */
+        .map-section {
+            background: #f0f4f8;
+            padding: 100px 5%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            perspective: 2000px;
+        }
+
+        #iraq-map {
+            width: 100%;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15));
+            transition: transform 0.5s ease;
+        }
+
+        .province {
+            fill: #e2e8f0;
+            stroke: #cbd5e0;
+            stroke-width: 1;
+            transition: all 0.3s ease;
+        }
+
+        .province.active-branch {
+            fill: var(--primary);
+            cursor: pointer;
+            filter: drop-shadow(0 0 10px rgba(58, 123, 213, 0.5));
+        }
+
+        .province.active-branch:hover {
+            fill: var(--accent);
+        }
+
+        .map-info {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: var(--shadow-light);
+            text-align: center;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 7. CONTACT & MODALS                                                        */
+        /* -------------------------------------------------------------------------- */
+        .contact-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 25px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-3d);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            background: rgba(26, 74, 154, 0.1);
+        }
+
+        .phone-number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--success);
+            text-decoration: none;
+            display: block;
+            margin: 20px 0;
+            direction: ltr;
+            text-align: center;
+        }
+
+        .phone-number:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 8. MODAL (للطلبات السريعة)                                                  */
+        /* -------------------------------------------------------------------------- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+            padding-top: calc(20px + var(--safe-area-top));
+            padding-bottom: calc(20px + var(--safe-area-bottom));
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            transform: translateY(30px);
+            transition: transform 0.5s ease;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: #f5f5f5;
+            color: var(--accent);
+        }
+
+        .modal-title {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-text {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 15px 30px;
             border-radius: 50px;
             border: none;
             font-weight: 700;
-            width: 80%;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Cairo', sans-serif;
             font-size: 1rem;
+            min-width: 150px;
         }
 
-        /* 5. Iraq Map - Real SVG Path */
-        .map-section {
-            background: #fff;
-            padding: 30px 20px;
-            border-radius: 40px;
-            margin: 20px;
-            text-align: center;
-        }
-
-        .map-container {
-            width: 100%;
-            padding: 20px;
-            background: #f8faff;
-            border-radius: 30px;
-            margin-top: 20px;
-        }
-
-        .iraq-map { width: 100%; height: auto; }
-        
-        /* تلوين المحافظات */
-        .province { fill: #e2e8f0; stroke: #fff; stroke-width: 1; transition: 0.3s; }
-        .active-city { fill: #1a4a9a; filter: drop-shadow(0 0 8px #1a4a9a); cursor: pointer; }
-
-        /* 6. Contact Area */
-        .contact-card {
-            background: #27ae60;
-            margin: 20px;
-            padding: 30px;
-            border-radius: 30px;
+        .modal-btn.primary {
+            background: var(--primary);
             color: white;
-            text-align: center;
         }
 
-        .phone-link {
+        .modal-btn.secondary {
+            background: #f0f0f0;
+            color: var(--dark);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* 9. FOOTER                                                                  */
+        /* -------------------------------------------------------------------------- */
+        footer {
+            background: var(--dark);
             color: white;
-            font-size: 1.8rem;
-            font-weight: 900;
+            padding: 80px 5% 40px;
+            text-align: center;
+            clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+            margin-top: 50px;
+        }
+
+        .footer-logo {
+            height: 70px;
+            margin-bottom: 30px;
+            filter: brightness(0) invert(1);
+        }
+
+        .social-links {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 1.2rem;
             text-decoration: none;
-            display: block;
-            margin: 15px 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        /* Animations */
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+        }
+
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* ANIMATIONS                                                                 */
+        /* -------------------------------------------------------------------------- */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -50px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
         }
 
-        .product-img { animation: float 4s ease-in-out infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
 
+        /* -------------------------------------------------------------------------- */
+        /* Mobile Responsive                                                          */
+        /* -------------------------------------------------------------------------- */
+        @media (max-width: 1200px) {
+            .hero-content h1 { font-size: 4.5rem; }
+            .section-title h2 { font-size: 2.8rem; }
+        }
+
+        @media (max-width: 992px) {
+            .hero-content h1 { font-size: 4rem; }
+            .hero-content p { font-size: 1.5rem; letter-spacing: 3px; }
+            .section-title h2 { font-size: 2.5rem; }
+            .price-tag { font-size: 2rem; }
+            .menu-grid { gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            /* قائمة الهامبرجر */
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: var(--glass);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                transition: var(--transition);
+                z-index: 5000;
+                padding-top: 80px;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-item a {
+                font-size: 1.2rem;
+                padding: 15px 30px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                height: 90vh;
+                min-height: 600px;
+                margin-top: 0;
+                clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+            }
+
+            .hero-content h1 { 
+                font-size: 3.2rem; 
+                margin-bottom: 15px;
+            }
+
+            .hero-content p { 
+                font-size: 1.3rem; 
+                letter-spacing: 2px;
+                margin-bottom: 30px;
+            }
+
+            .hero-scroll-indicator {
+                bottom: 30px;
+                font-size: 1.2rem;
+            }
+
+            .section-container {
+                padding: 70px 5%;
+            }
+
+            .section-title {
+                margin-bottom: 50px;
+            }
+
+            .section-title h2 { 
+                font-size: 2.2rem; 
+            }
+
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 70px;
+            }
+
+            .product-card {
+                padding: 35px 20px 25px;
+            }
+
+            .product-image-container {
+                height: 180px;
+            }
+
+            .product-image {
+                max-width: 180px;
+                max-height: 150px;
+            }
+
+            .product-info h3 { 
+                font-size: 1.6rem; 
+                min-height: auto;
+                margin-bottom: 15px;
+            }
+
+            .contact-card {
+                padding: 30px 20px;
+            }
+
+            .phone-number {
+                font-size: 1.8rem;
+            }
+
+            footer {
+                padding: 60px 5% 30px;
+                clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-content p { font-size: 1.1rem; letter-spacing: 1px; }
+            .section-title h2 { font-size: 1.8rem; }
+            .order-btn, .modal-btn { min-width: 120px; padding: 12px 25px; }
+            .modal { padding: 30px 20px; }
+        }
+
+        /* دعم خاص للشاشات مع النوتش */
+        @supports (padding: max(0px)) {
+            .header, .hero, .preloader, .modal-overlay {
+                padding-top: max(15px, var(--safe-area-top));
+            }
+            
+            .modal-overlay {
+                padding-bottom: max(20px, var(--safe-area-bottom));
+            }
+        }
     </style>
 </head>
 <body>
 
+    <div id="custom-cursor"></div>
+    
+    <div class="preloader" id="preloader">
+        <img src="https://cdn.pixabay.com/photo/2016/12/17/16/59/dots-1913307_1280.png" class="loader-logo" alt="Loading...">
+    </div>
+
+    <!-- Modal للطلبات السريعة -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <h2 class="modal-title" id="modalProductTitle">طلب منتج</h2>
+            <p class="modal-text" id="modalProductText">سيتم توجيهك لتطبيق واتساب لإتمام الطلب</p>
+            <div class="modal-buttons">
+                <button class="modal-btn primary" id="confirmOrder">متابعة الطلب</button>
+                <button class="modal-btn secondary" id="cancelOrder">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="header" id="navbar">
+        <div class="nav-brand">
+            <img src="https://cdn.pixabay.com/photo/2017/01/31/23/42/animal-2028258_1280.png" alt="Nice Girl" style="filter: hue-rotate(220deg);">
+        </div>
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="#home" class="active">الرئيسية</a></li>
+                <li class="nav-item"><a href="#menu">المنيو</a></li>
+                <li class="nav-item"><a href="#locations">فروعنا</a></li>
+                <li class="nav-item"><a href="#contact">التواصل</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <section class="hero" id="home">
+        <div class="hero-shapes" id="shapes-container"></div>
         <div class="hero-content">
-            <h1>Nice Girl</h1>
-            <p>أهلاً بك في عالم الصحة</p>
+            <h1 data-parallax="0.2">NICE GIRL</h1>
+            <p data-parallax="0.1">BE NATURE BE BETTER</p>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto; opacity: 0.8;">استمتع بألذ الحلويات والمشروبات الطبيعية 100%</p>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
         </div>
     </section>
 
-    <div class="menu-section" id="menu">
-        <h2 style="margin-bottom: 60px; text-align: center; font-weight: 900;">المنيو المنعش</h2>
+    <section class="section-container" id="menu">
+        <div class="section-title">
+            <h2>قائمة المنتجات</h2>
+            <p class="section-subtitle">تذوق ألذ الحلويات والمشروبات الطبيعية المصنوعة من أجود المكونات</p>
+        </div>
         
-        <div class="card">
-            <div class="img-holder">
-                <img src="assets/products/yogurt-medium.png" class="product-img" alt="Yogurt">
+        <div class="menu-grid">
+            <div class="product-card">
+                <div class="badge">الأكثر مبيعاً</div>
+                <div class="product-image-container">
+                    <img src="https://cdn.pixabay.com/photo/2017/08/07/15/59/yogurt-2605632_1280.png" class="product-image" alt="Yogurt">
+                </div>
+                <div class="product-info">
+                    <h3>لبن مثلج - وسط</h3>
+                    <p>استمتع بـ 3 إضافات من اختيارك من الفواكه الطازجة مع اللبن الطبيعي 100%.</p>
+                    <span class="price-tag">4,250 دينار</span>
+                    <button class="order-btn" data-product="لبن مثلج - وسط" data-price="4,250">طلب سريع</button>
+                </div>
             </div>
-            <h3>لبن مثلج وسط</h3>
-            <p>3 إضافات من الفواكه المنعشة</p>
-            <span class="price">4,250 IQD</span>
-            <button class="order-btn">اطلب عبر واتساب</button>
-        </div>
 
-        <div class="card">
-            <div class="img-holder">
-                <img src="assets/products/smoothie.png" class="product-img" alt="Smoothie">
+            <div class="product-card">
+                <div class="badge new">جديد</div>
+                <div class="product-image-container">
+                    <img src="https://cdn.pixabay.com/photo/2018/04/13/17/14/vegetable-3317062_1280.png" class="product-image" alt="Smoothie">
+                </div>
+                <div class="product-info">
+                    <h3>سموذي أفوكادو</h3>
+                    <p>مزيج غني بالفيتامينات مع اللبن الطبيعي 100% والأفوكادو الطازج.</p>
+                    <span class="price-tag">6,000 دينار</span>
+                    <button class="order-btn" data-product="سموذي أفوكادو" data-price="6,000">طلب سريع</button>
+                </div>
             </div>
-            <h3>سموذي أفوكادو</h3>
-            <p>طاقة، صحة، وطعم لا يقاوم</p>
-            <span class="price">6,000 IQD</span>
-            <button class="order-btn">اطلب عبر واتساب</button>
-        </div>
-    </div>
 
-    <div class="map-section" id="location">
-        <h3>مواقعنا في العراق</h3>
-        <div class="map-container">
-            <svg class="iraq-map" viewBox="0 0 500 500">
-                <path class="province" d="M150 100 L350 100 L400 300 L250 450 L100 300 Z" /> <circle class="active-city" cx="240" cy="280" r="15" onclick="alert('فرع كربلاء - بانوراما مول')" />
-                <text x="210" y="315" font-size="12" font-weight="bold" fill="#1a4a9a">كربلاء المقدسة</text>
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="https://cdn.pixabay.com/photo/2016/11/29/08/24/fruits-1868081_1280.png" class="product-image" alt="Large Yogurt">
+                </div>
+                <div class="product-info">
+                    <h3>كوب سبيشل</h3>
+                    <p>تجربة فاخرة بـ 5 إضافات مع صوص الشوكولاتة والكراميل واللبن الطبيعي.</p>
+                    <span class="price-tag">7,500 دينار</span>
+                    <button class="order-btn" data-product="كوب سبيشل" data-price="7,500">طلب سريع</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section" id="locations">
+        <div class="section-title">
+            <h2>مواقعنا في العراق</h2>
+            <p class="section-subtitle">نعمل على توسعة فروعنا لتشمل كافة محافظات العراق</p>
+        </div>
+        
+        <div class="map-wrapper" id="map-3d">
+            <svg id="iraq-map" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+                <path class="province active-branch" d="M350 450 L400 450 L400 500 L350 500 Z" data-province="karbala"/>
+                <text x="355" y="480" fill="white" font-size="12" font-weight="bold">كربلاء</text>
+
+                <path class="province active-branch" d="M400 400 L450 400 L450 450 L400 450 Z" data-province="baghdad"/>
+                <text x="405" y="430" fill="white" font-size="10" font-weight="bold">بغداد</text>
+                
+                <path class="province" d="M300 300 L350 300 L350 350 L300 350 Z" data-province="mosul"/>
+                <text x="305" y="330" fill="#666" font-size="9">الموصل</text>
+                
+                <path class="province active-branch" d="M500 500 L550 500 L550 550 L500 550 Z" data-province="basra"/>
+                <text x="505" y="530" fill="white" font-size="10" font-weight="bold">البصرة</text>
+                
+                <path class="province" d="M200 200 L250 200 L250 250 L200 250 Z" data-province="erbil"/>
+                <text x="205" y="230" fill="#666" font-size="9">أربيل</text>
             </svg>
         </div>
-        <p style="margin-top: 15px; font-size: 0.9rem;">نحن متواجدون حالياً في كربلاء وقريباً في كل العراق</p>
-    </div>
+        
+        <div class="map-info">
+            <h3 style="color: var(--primary); margin-bottom: 10px;">فروعنا الحالية</h3>
+            <p>يتوفر لدينا فروع في محافظات: <strong>كربلاء، بغداد، البصرة</strong></p>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">نخطط لفتح فروع جديدة في باقي المحافظات قريباً</p>
+        </div>
+    </section>
 
-    <div class="contact-card" id="contact">
-        <h3>للحجز والطلب الهاتفي</h3>
-        <a href="tel:07800000000" class="phone-link">0780 000 0000</a>
-        <p>اضغط على الرقم للاتصال المباشر</p>
-    </div>
+    <section class="section-container" id="contact">
+        <div class="section-title">
+            <h2>تواصل معنا</h2>
+            <p class="section-subtitle">نحن هنا لخدمتك في أي وقت ومن خلال قنوات متعددة</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-card">
+                <div class="contact-icon">📞</div>
+                <h3>اتصل بنا للطلب</h3>
+                <a href="tel:07800000000" class="phone-number">0780 000 0000</a>
+                <p>متاحون من 10 صباحاً حتى 12 ليلاً</p>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">خدمة التوصيل متاحة ضمن المدينة</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <h3>موقع الفرع الرئيسي</h3>
+                <p>كربلاء المقدسة</p>
+                <p>حي الموظفين - بانوراما مول - الطابق الأرضي</p>
+                <a href="https://maps.google.com/?q=Panorama+Mall+Karbala" target="_blank" class="order-btn" style="display:inline-block; margin-top:20px; text-decoration:none;">فتح في خرائط جوجل</a>
+            </div>
+        </div>
+    </section>
 
-    <nav class="bottom-nav">
-        <a href="#home" class="nav-item active"><span>الرئيسية</span></a>
-        <a href="#menu" class="nav-item"><span>المنيو</span></a>
-        <a href="#location" class="nav-item"><span>الفروع</span></a>
-        <a href="#contact" class="nav-item"><span>اتصل بنا</span></a>
-    </nav>
+    <footer>
+        <img src="https://cdn.pixabay.com/photo/2017/01/31/23/42/animal-2028258_1280.png" class="footer-logo" alt="Nice Girl" style="filter: hue-rotate(220deg);">
+        
+        <div class="social-links">
+            <a href="#" class="social-link">
+                <i class="fab fa-instagram social-icon"></i>
+                <span>Instagram</span>
+            </a>
+            <a href="#" class="social-link">
+                <i class="fab fa-facebook-f social-icon"></i>
+                <span>Facebook</span>
+            </a>
+            <a href="#" class="social-link">
+                <i class="fab fa-snapchat-ghost social-icon"></i>
+                <span>Snapchat</span>
+            </a>
+            <a href="https://wa.me/96407800000000" class="social-link" target="_blank">
+                <i class="fab fa-whatsapp social-icon"></i>
+                <span>WhatsApp</span>
+            </a>
+        </div>
+        
+        <p>كل الحقوق محفوظة لشركة Nice Girl © <span id="currentYear">2024</span></p>
+        <p class="copyright">Designed with <i class="fas fa-heart" style="color: #ff4757;"></i> for Healthy Life</p>
+    </footer>
 
     <script>
-        // منع التمرير الأفقي تماماً
-        window.addEventListener('scroll', () => {
-            if (window.scrollX !== 0) {
-                window.scrollTo(0, window.scrollY);
-            }
+        // تعريف المتغيرات العامة
+        let currentProduct = null;
+        let currentPrice = null;
+        
+        /** 1. Preloader Handler **/
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('hidden');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 1000);
+            
+            initAnimations();
+            revealSections(); // تحميل الأقسام المرئية مباشرة
         });
 
-        // تغيير الحالة النشطة في القائمة السفلية
-        const navLinks = document.querySelectorAll('.nav-item');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+        /** 2. Custom Cursor Logic (للحواسيب فقط) **/
+        if (window.matchMedia("(min-width: 769px)").matches) {
+            const cursor = document.getElementById('custom-cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            
+            // تأثير عند المرور على العناصر القابلة للنقر
+            const clickableElements = document.querySelectorAll('button, a, .province.active-branch');
+            clickableElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(2)';
+                    cursor.style.background = 'var(--accent)';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.background = 'var(--primary)';
+                });
+            });
+        }
+
+        /** 3. القائمة المتحركة للجوال (هامبرجر) **/
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // إغلاق القائمة عند النقر على رابط
+            const navLinks = document.querySelectorAll('.nav-item a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
             });
         });
 
-        // تحسين أداء اللمس
-        document.addEventListener('touchstart', function() {}, {passive: true});
+        /** 4. التنقل الناعم وتسليط الضوء على الروابط **/
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // تحديث الروابط النشطة عند التمرير
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-item a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        /** 5. Hero Parallax & Shapes **/
+        function initAnimations() {
+            // إنشاء أشكال عائمة
+            const container = document.getElementById('shapes-container');
+            const shapesCount = window.innerWidth < 768 ? 12 : 20;
+            
+            for (let i = 0; i < shapesCount; i++) {
+                const shape = document.createElement('span');
+                const size = Math.random() * 60 + 10 + 'px';
+                const opacity = Math.random() * 0.1 + 0.03;
+                const duration = Math.random() * 20 + 10 + 's';
+                const delay = Math.random() * 5 + 's';
+                
+                shape.style.width = size;
+                shape.style.height = size;
+                shape.style.left = Math.random() * 100 + '%';
+                shape.style.top = Math.random() * 100 + '%';
+                shape.style.opacity = opacity;
+                shape.style.animation = `float ${duration} infinite ${delay}`;
+                shape.style.background = `radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 70%, transparent 100%)`;
+                
+                container.appendChild(shape);
+            }
+        }
+
+        // تأثير parallax للعناصر
+        if (window.matchMedia("(min-width: 992px)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                const elements = document.querySelectorAll('[data-parallax]');
+                elements.forEach(el => {
+                    const speed = parseFloat(el.getAttribute('data-parallax'));
+                    const x = (window.innerWidth - e.pageX * speed) / 100;
+                    const y = (window.innerHeight - e.pageY * speed) / 100;
+                    el.style.transform = `translateX(${x}px) translateY(${y}px)`;
+                });
+            });
+        }
+
+        /** 6. إظهار الأقسام عند التمرير **/
+        function revealSections() {
+            const reveals = document.querySelectorAll('.section-container');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        // استدعاء الوظائف عند التمرير
+        window.addEventListener('scroll', () => {
+            updateActiveLink();
+            revealSections();
+        });
+
+        /** 7. معالج الطلبات السريعة **/
+        document.querySelectorAll('.order-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                currentProduct = this.getAttribute('data-product');
+                currentPrice = this.getAttribute('data-price');
+                
+                const modal = document.getElementById('orderModal');
+                const modalTitle = document.getElementById('modalProductTitle');
+                const modalText = document.getElementById('modalProductText');
+                
+                modalTitle.textContent = `طلب ${currentProduct}`;
+                modalText.textContent = `سعر المنتج: ${currentPrice} دينار عراقي. سيتم توجيهك لتطبيق واتساب لإتمام الطلب.`;
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // منع التمرير عند فتح المودال
+            });
+        });
+
+        // إغلاق المودال
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('cancelOrder').addEventListener('click', closeModal);
+        document.getElementById('orderModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        function closeModal() {
+            const modal = document.getElementById('orderModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // إعادة التمرير
+        }
+
+        // تأكيد الطلب
+        document.getElementById('confirmOrder').addEventListener('click', function() {
+            if (currentProduct) {
+                const phoneNumber = "96407800000000";
+                const message = `أريد طلب ${currentProduct} بسعر ${currentPrice} دينار`;
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                
+                window.open(whatsappUrl, '_blank');
+                closeModal();
+            }
+        });
+
+        /** 8. خريطة العراق التفاعلية **/
+        document.querySelectorAll('.province.active-branch').forEach(province => {
+            province.addEventListener('click', function() {
+                const provinceName = this.getAttribute('data-province');
+                let locationUrl = '';
+                
+                switch(provinceName) {
+                    case 'karbala':
+                        locationUrl = 'https://maps.google.com/?q=Panorama+Mall+Karbala';
+                        break;
+                    case 'baghdad':
+                        locationUrl = 'https://maps.google.com/?q=Baghdad+Mall';
+                        break;
+                    case 'basra':
+                        locationUrl = 'https://maps.google.com/?q=Basra+Mall';
+                        break;
+                    default:
+                        locationUrl = 'https://maps.google.com/?q=Iraq';
+                }
+                
+                window.open(locationUrl, '_blank');
+            });
+            
+            // تأثير hover للخريطة (لأجهزة الكمبيوتر)
+            if (window.matchMedia("(min-width: 769px)").matches) {
+                province.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.filter = 'drop-shadow(0 0 15px rgba(58, 123, 213, 0.7))';
+                });
+                
+                province.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.filter = 'drop-shadow(0 0 10px rgba(58, 123, 213, 0.5))';
+                });
+            }
+        });
+
+        /** 9. تحديث السنة الحالية في الفوتر **/
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        /** 10. تأثيرات 3D للخريطة (لأجهزة الكمبيوتر فقط) **/
+        if (window.matchMedia("(min-width: 992px)").matches) {
+            const mapWrapper = document.getElementById('map-3d');
+            
+            document.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                mapWrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+            
+            // إعادة الخريطة إلى وضعها الطبيعي عند مغادرة الماوس
+            mapWrapper.addEventListener('mouseleave', () => {
+                mapWrapper.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                mapWrapper.style.transition = 'transform 0.5s ease';
+                setTimeout(() => {
+                    mapWrapper.style.transition = '';
+                }, 500);
+            });
+        }
+
+        /** 11. تحسينات الأداء والذاكرة **/
+        // إزالة المعالجات عند إغلاق الصفحة
+        window.addEventListener('beforeunload', () => {
+            document.removeEventListener('mousemove', null);
+            document.removeEventListener('scroll', null);
+        });
     </script>
 </body>
-</html>
+    </html>
