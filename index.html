@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nice Girl | Be Nature Be Better</title>
     
-    <!-- حل مشكلة النوتش في الجوالات الحديثة -->
-    <meta name="theme-color" content="#1a4a9a">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
     <!-- خطوط Google -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     
@@ -187,7 +183,7 @@
         }
 
         /* -------------------------------------------------------------------------- */
-        /* 4. HERO SECTION (محسنة مع دعم النوتش)                                      */
+        /* 4. HERO SECTION (مع خلفية محلية)                                          */
         /* -------------------------------------------------------------------------- */
         .hero {
             height: 100vh;
@@ -195,7 +191,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(45deg, #092c6b, #1a4a9a, #3a7bd5);
+            background: linear-gradient(rgba(9, 44, 107, 0.85), rgba(26, 74, 154, 0.9)),
+                        url('assets/hero-bg.jpg') center/cover no-repeat;
             position: relative;
             overflow: hidden;
             clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
@@ -252,7 +249,7 @@
         }
 
         /* -------------------------------------------------------------------------- */
-        /* 5. MENU SECTION (مع تحسين عرض الصور)                                       */
+        /* 5. MENU SECTION (مع صور محلية)                                            */
         /* -------------------------------------------------------------------------- */
         .section-container {
             padding: 100px 5%;
@@ -356,7 +353,10 @@
             object-fit: contain;
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
             transition: var(--transition);
-            /* إزالة الخلفية من الصور */
+        }
+
+        /* حل مشكلة حواف الصور */
+        .product-image.clean-edges {
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
         }
@@ -381,6 +381,10 @@
 
         .badge.new {
             background: var(--success);
+        }
+
+        .badge.popular {
+            background: #ff9f43;
         }
 
         .product-info {
@@ -882,6 +886,20 @@
                 padding-bottom: max(20px, var(--safe-area-bottom));
             }
         }
+        
+        /* بديل للصور إذا لم توجد */
+        .image-placeholder {
+            width: 220px;
+            height: 180px;
+            background: linear-gradient(45deg, #f5f7fa, #c3cfe2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -889,7 +907,7 @@
     <div id="custom-cursor"></div>
     
     <div class="preloader" id="preloader">
-        <img src="https://cdn.pixabay.com/photo/2016/12/17/16/59/dots-1913307_1280.png" class="loader-logo" alt="Loading...">
+        <img src="assets/logo.png" class="loader-logo" alt="Loading..." onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9Ijc1IiBjeT0iNzUiIHI9IjUwIiBzdHJva2U9IiMxYTRhOWEiIHN0cm9rZS13aWR0aD0iOCIvPgo8Y2lyY2xlIGN4PSI3NSIgY3k9Ijc1IiByPSI1MCIgc3Ryb2tlPSIjM2E3YmQ1IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1kYXNoYXJyYXk9IjIwMCAyMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxhbmltYXRlVHJhbnNmb3JtIGF0dHJpYnV0ZU5hbWU9InRyYW5zZm9ybSIgdHlwZT0icm90YXRlIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgZHVyPSIxLjVzIiB2YWx1ZXM9IjAgNzUgNzU7MzYwIDc1IDc1IiBrZXlUaW1lcz0iMDsxIi8+CjwvY2lyY2xlPgo8L3N2Zz4K'">
     </div>
 
     <!-- Modal للطلبات السريعة -->
@@ -907,7 +925,7 @@
 
     <header class="header" id="navbar">
         <div class="nav-brand">
-            <img src="https://cdn.pixabay.com/photo/2017/01/31/23/42/animal-2028258_1280.png" alt="Nice Girl" style="filter: hue-rotate(220deg);">
+            <img src="assets/logo.png" alt="Nice Girl" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9IiMxYTRhOWEiLz4KPHBhdGggZD0iTTE1IDM1TDM1IDE1TTM1IDM1TDE1IDE1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K'">
         </div>
         
         <div class="hamburger" id="hamburger">
@@ -948,7 +966,8 @@
             <div class="product-card">
                 <div class="badge">الأكثر مبيعاً</div>
                 <div class="product-image-container">
-                    <img src="https://cdn.pixabay.com/photo/2017/08/07/15/59/yogurt-2605632_1280.png" class="product-image" alt="Yogurt">
+                    <img src="assets/products/yogurt-medium.png" class="product-image clean-edges" alt="لبن مثلج - وسط"
+                         onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>لبن وسط</div>'">
                 </div>
                 <div class="product-info">
                     <h3>لبن مثلج - وسط</h3>
@@ -961,7 +980,8 @@
             <div class="product-card">
                 <div class="badge new">جديد</div>
                 <div class="product-image-container">
-                    <img src="https://cdn.pixabay.com/photo/2018/04/13/17/14/vegetable-3317062_1280.png" class="product-image" alt="Smoothie">
+                    <img src="assets/products/smoothie-1.png" class="product-image clean-edges" alt="سموذي أفوكادو"
+                         onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>سموذي</div>'">
                 </div>
                 <div class="product-info">
                     <h3>سموذي أفوكادو</h3>
@@ -972,14 +992,55 @@
             </div>
 
             <div class="product-card">
+                <div class="badge popular">مميز</div>
                 <div class="product-image-container">
-                    <img src="https://cdn.pixabay.com/photo/2016/11/29/08/24/fruits-1868081_1280.png" class="product-image" alt="Large Yogurt">
+                    <img src="assets/products/yogurt-large.png" class="product-image clean-edges" alt="كوب سبيشل"
+                         onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>كوب سبيشل</div>'">
                 </div>
                 <div class="product-info">
                     <h3>كوب سبيشل</h3>
                     <p>تجربة فاخرة بـ 5 إضافات مع صوص الشوكولاتة والكراميل واللبن الطبيعي.</p>
                     <span class="price-tag">7,500 دينار</span>
                     <button class="order-btn" data-product="كوب سبيشل" data-price="7,500">طلب سريع</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="assets/products/yogurt-small.png" class="product-image clean-edges" alt="لبن مثلج - صغير"
+                         onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>لبن صغير</div>'">
+                </div>
+                <div class="product-info">
+                    <h3>لبن مثلج - صغير</h3>
+                    <p>استمتع بإضافة واحدة من اختيارك مع اللبن الطبيعي 100%.</p>
+                    <span class="price-tag">3,000 دينار</span>
+                    <button class="order-btn" data-product="لبن مثلج - صغير" data-price="3,000">طلب سريع</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="assets/products/fruit-cup.png" class="product-image clean-edges" alt="كوب فواكه"
+                         onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>كوب فواكه</div>'">
+                </div>
+                <div class="product-info">
+                    <h3>كوب فواكه طازجة</h3>
+                    <p>مزيج من الفواكه الموسمية الطازجة مع اللبن والعسل الطبيعي.</p>
+                    <span class="price-tag">5,500 دينار</span>
+                    <button class="order-btn" data-product="كوب فواكه طازجة" data-price="5,500">طلب سريع</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="assets/products/tea-ice.png" class="product-image clean-edges" alt="شاي مثلج"
+                         onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>شاي مثلج</div>'">
+                </div>
+                <div class="product-info">
+                    <h3>شاي مثلج بنكهات</h3>
+                    <p>شاي مثلج طبيعي مع نكهات الفواكه الطازجة والليمون والنعناع.</p>
+                    <span class="price-tag">3,500 دينار</span>
+                    <button class="order-btn" data-product="شاي مثلج بنكهات" data-price="3,500">طلب سريع</button>
                 </div>
             </div>
         </div>
@@ -1041,7 +1102,7 @@
     </section>
 
     <footer>
-        <img src="https://cdn.pixabay.com/photo/2017/01/31/23/42/animal-2028258_1280.png" class="footer-logo" alt="Nice Girl" style="filter: hue-rotate(220deg);">
+        <img src="assets/logo.png" class="footer-logo" alt="Nice Girl" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iMjgiIGZpbGw9IiMxYTRhOWEiLz4KPHBhdGggZD0iTTIwIDUwTDUwIDIwTTUwIDUwTDIwIDIwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K'">
         
         <div class="social-links">
             <a href="#" class="social-link">
@@ -1324,7 +1385,21 @@
             });
         }
 
-        /** 11. تحسينات الأداء والذاكرة **/
+        /** 11. تحسين عرض الصور مع معالجة الأخطاء **/
+        function preloadImages() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                // إضافة حدث onerror للصور
+                if (!img.hasAttribute('onerror')) {
+                    img.setAttribute('onerror', "this.style.display='none'; this.parentElement.innerHTML='<div class=\"image-placeholder\">' + this.alt + '</div>'");
+                }
+            });
+        }
+
+        // استدعاء الدالة عند تحميل الصفحة
+        window.addEventListener('load', preloadImages);
+
+        /** 12. تحسينات الأداء والذاكرة **/
         // إزالة المعالجات عند إغلاق الصفحة
         window.addEventListener('beforeunload', () => {
             document.removeEventListener('mousemove', null);
