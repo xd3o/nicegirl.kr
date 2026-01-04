@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nice Girl | Healthy Frozen Yogurt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a4a9a;
+            --secondary: #ff6b6b; /* لون فواكه جذاب */
+            --bg-light: #f4f7f9;
+            --white: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background-color: var(--bg-light);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo img { height: 50px; }
+
+        .nav-links { display: flex; list-style: none; gap: 25px; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--primary); 
+            font-weight: 700; 
+            transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--secondary); }
+
+        /* Hero Section */
+        .hero {
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1a4a9a 0%, #3a7bd5 100%);
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 { font-size: 4rem; margin-bottom: 10px; font-weight: 900; }
+        .hero-content p { font-size: 1.5rem; opacity: 0.9; margin-bottom: 30px; }
+
+        /* Menu Grid */
+        .container { padding: 80px 8%; }
+        .section-title { 
+            text-align: center; 
+            font-size: 2.5rem; 
+            color: var(--primary); 
+            margin-bottom: 60px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        /* 3D Card Effect */
+        .card {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+            margin-top: 50px; /* لترك مساحة للصورة البارزة */
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* تحويل الصورة إلى 3D */
+        .product-img {
+            width: 220px;
+            height: auto;
+            margin-top: -100px; /* تجعل الصورة تبرز خارج الكارت */
+            filter: drop-shadow(0 20px 20px rgba(0,0,0,0.2)); /* ظل واقعي خلف الـ PNG */
+            transition: var(--transition);
+        }
+
+        .card:hover .product-img {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 30px 30px rgba(0,0,0,0.3));
+        }
+
+        .card h3 { font-size: 1.8rem; margin: 20px 0 10px; color: var(--primary); }
+        .card .price { 
+            font-size: 1.5rem; 
+            color: var(--secondary); 
+            font-weight: 900; 
+            display: block;
+            margin-top: 15px;
+        }
+
+        .btn-order {
+            margin-top: 20px;
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-order:hover { background: var(--secondary); }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .grid { gap: 80px; } /* زيادة المسافة للموبايل بسبب الصور البارزة */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><img src="assets/logo.png" alt="Nice Girl"></div>
+        <ul class="nav-links">
+            <li><a href="#yogurt">لبن مثلج</a></li>
+            <li><a href="#smoothies">سموذي</a></li>
+            <li><a href="#tea">شاي فواكه</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Nice Girl</h1>
+            <p>الطبيعة في كل ملعقة.. صحي، فريش، ولذيذ</p>
+        </div>
+    </section>
+
+    <div class="container" id="yogurt">
+        <h2 class="section-title">قائمة اللبن المثلج</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/products/yogurt-small.png" class="product-img" alt="Yogurt Small">
+                <h3>حجم صغير</h3>
+                <p>إضافة واحدة من اختيارك</p>
+                <span class="price">3,000 IQD</span>
+                <button class="btn-order">طلب الآن</button>
+            </div>
+
+            <div class="card">
+                <img src="assets/products/yogurt-medium.png" class="product-img" alt="Yogurt Medium">
+                <h3>حجم وسط</h3>
+                <p>3 إضافات من الفواكه المنعشة</p>
+                <span class="price">4,250 IQD</span>
+                <button class="btn-order">طلب الآن</button>
+            </div>
+
+            <div class="card">
+                <img src="assets/products/yogurt-large.png" class="product-img" alt="Yogurt Large">
+                <h3>حجم سبيشل</h3>
+                <p>5 إضافات مع صوص خاص</p>
+                <span class="price">7,500 IQD</span>
+                <button class="btn-order">طلب الآن</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة لـ Nice Girl © 2024</p>
+        <p>كربلاء - بانوراما مول</p>
+    </footer>
+
+    <script>
+        // تأثير ظهور العناصر عند التمرير
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
