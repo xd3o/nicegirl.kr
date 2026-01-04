@@ -3,217 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nice Girl | Healthy Frozen Yogurt</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>Nice Girl | Experience Nature</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a4a9a;
-            --secondary: #ff6b6b; /* لون فواكه جذاب */
-            --bg-light: #f4f7f9;
-            --white: #ffffff;
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --accent: #ff4757;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 20px 40px rgba(0,0,0,0.1);
+            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Cairo', sans-serif;
-            margin: 0;
-            background-color: var(--bg-light);
-            color: #333;
+            background: #fdfdfd;
+            color: #2d3436;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Navbar */
+        /* خلفية فنية للموقع */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -10%; left: -10%;
+            width: 40%; height: 40%;
+            background: radial-gradient(circle, rgba(26, 74, 154, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        /* Navbar الاحترافي */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 8%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            position: sticky;
+            padding: 20px 10%;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            width: 100%;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            z-index: 2000;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
         }
 
-        .logo img { height: 50px; }
+        .logo img { height: 55px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
 
-        .nav-links { display: flex; list-style: none; gap: 25px; }
-        .nav-links a { 
-            text-decoration: none; 
-            color: var(--primary); 
-            font-weight: 700; 
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 2px;
+            background: var(--accent);
             transition: var(--transition);
         }
-        .nav-links a:hover { color: var(--secondary); }
 
-        /* Hero Section */
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Hero Section السينمائي */
         .hero {
-            height: 85vh;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            background: linear-gradient(135deg, #1a4a9a 0%, #3a7bd5 100%);
+            background: linear-gradient(135deg, #1a4a9a 0%, #092c6b 100%);
             color: white;
-            padding: 0 20px;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
         }
 
-        .hero-content h1 { font-size: 4rem; margin-bottom: 10px; font-weight: 900; }
-        .hero-content p { font-size: 1.5rem; opacity: 0.9; margin-bottom: 30px; }
+        .hero-content h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+            animation: fadeInUp 1s ease;
+        }
 
-        /* Menu Grid */
-        .container { padding: 80px 8%; }
-        .section-title { 
-            text-align: center; 
-            font-size: 2.5rem; 
-            color: var(--primary); 
-            margin-bottom: 60px;
+        .hero-content p {
+            font-size: 1.8rem;
+            font-weight: 300;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        /* قسم المنيو */
+        .container { padding: 100px 10%; }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            color: var(--primary);
+            font-weight: 800;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 60px;
         }
 
-        /* 3D Card Effect */
+        /* كارت المنتج 3D الاحترافي */
         .card {
-            background: var(--white);
-            border-radius: 25px;
-            padding: 30px;
+            background: white;
+            border-radius: 40px;
+            padding: 40px;
             text-align: center;
-            position: relative;
             transition: var(--transition);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.03);
-            margin-top: 50px; /* لترك مساحة للصورة البارزة */
+            position: relative;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.02);
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
         }
 
-        /* تحويل الصورة إلى 3D */
+        /* الصورة الطافية */
+        .img-wrapper {
+            position: relative;
+            height: 250px;
+            margin-top: -100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .product-img {
-            width: 220px;
-            height: auto;
-            margin-top: -100px; /* تجعل الصورة تبرز خارج الكارت */
-            filter: drop-shadow(0 20px 20px rgba(0,0,0,0.2)); /* ظل واقعي خلف الـ PNG */
+            width: 240px;
+            z-index: 2;
+            filter: drop-shadow(0 30px 30px rgba(0,0,0,0.25));
             transition: var(--transition);
         }
 
         .card:hover .product-img {
-            transform: scale(1.1) rotate(5deg);
-            filter: drop-shadow(0 30px 30px rgba(0,0,0,0.3));
+            transform: rotate(-5deg) scale(1.1);
         }
 
-        .card h3 { font-size: 1.8rem; margin: 20px 0 10px; color: var(--primary); }
-        .card .price { 
-            font-size: 1.5rem; 
-            color: var(--secondary); 
-            font-weight: 900; 
-            display: block;
-            margin-top: 15px;
+        /* هالة ضوئية خلف المنتج */
+        .glow {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(26, 74, 154, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
         }
 
-        .btn-order {
+        .card h3 {
+            font-size: 1.8rem;
             margin-top: 20px;
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: none;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .price-tag {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .order-btn {
             background: var(--primary);
             color: white;
-            font-weight: bold;
+            padding: 12px 35px;
+            border-radius: 100px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(26, 74, 154, 0.2);
         }
 
-        .btn-order:hover { background: var(--secondary); }
+        .order-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(255, 71, 87, 0.3);
+        }
 
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
         footer {
-            background: var(--primary);
+            background: #092c6b;
             color: white;
-            padding: 40px;
+            padding: 80px 10% 40px;
             text-align: center;
-            margin-top: 100px;
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
         }
 
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .grid { gap: 80px; } /* زيادة المسافة للموبايل بسبب الصور البارزة */
+            .hero-content h1 { font-size: 3rem; }
+            .grid { gap: 100px; padding-top: 50px; }
         }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="logo"><img src="assets/logo.png" alt="Nice Girl"></div>
+        <div class="logo"><img src="assets/logo.png" alt="Nice Girl Logo"></div>
         <ul class="nav-links">
-            <li><a href="#yogurt">لبن مثلج</a></li>
-            <li><a href="#smoothies">سموذي</a></li>
-            <li><a href="#tea">شاي فواكه</a></li>
+            <li><a href="#yogurt">اللبن المثلج</a></li>
+            <li><a href="#smoothies">السموذي</a></li>
+            <li><a href="#about">قصتنا</a></li>
         </ul>
     </nav>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Nice Girl</h1>
-            <p>الطبيعة في كل ملعقة.. صحي، فريش، ولذيذ</p>
+            <h1>NICE GIRL</h1>
+            <p>عيش الحلاوة.. بدون سكر</p>
         </div>
     </section>
 
     <div class="container" id="yogurt">
-        <h2 class="section-title">قائمة اللبن المثلج</h2>
+        <div class="section-header">
+            <h2>قائمة اللبن المثلج</h2>
+            <p>نستخدم أجود أنواع اللبن الطبيعي مع فواكه طازجة يومياً</p>
+        </div>
+
         <div class="grid">
             <div class="card">
-                <img src="assets/products/yogurt-small.png" class="product-img" alt="Yogurt Small">
-                <h3>حجم صغير</h3>
-                <p>إضافة واحدة من اختيارك</p>
-                <span class="price">3,000 IQD</span>
-                <button class="btn-order">طلب الآن</button>
+                <div class="img-wrapper">
+                    <div class="glow"></div>
+                    <img src="assets/products/yogurt-small.png" class="product-img" alt="Small Yogurt">
+                </div>
+                <h3>كوب صغير</h3>
+                <p>مثالي للتحلية السريعة مع إضافة واحدة</p>
+                <span class="price-tag">3,000 IQD</span>
+                <button class="order-btn">اطلب الآن</button>
+            </div>
+
+            <div class="card" style="border: 2px solid var(--primary);">
+                <div class="img-wrapper">
+                    <div class="glow" style="background: radial-gradient(circle, rgba(255, 71, 87, 0.2) 0%, transparent 70%);"></div>
+                    <img src="assets/products/yogurt-medium.png" class="product-img" alt="Medium Yogurt">
+                </div>
+                <h3>كوب وسط</h3>
+                <p>الأكثر طلباً - يأتي مع 3 إضافات غنية</p>
+                <span class="price-tag">4,250 IQD</span>
+                <button class="order-btn">اطلب الآن</button>
             </div>
 
             <div class="card">
-                <img src="assets/products/yogurt-medium.png" class="product-img" alt="Yogurt Medium">
-                <h3>حجم وسط</h3>
-                <p>3 إضافات من الفواكه المنعشة</p>
-                <span class="price">4,250 IQD</span>
-                <button class="btn-order">طلب الآن</button>
-            </div>
-
-            <div class="card">
-                <img src="assets/products/yogurt-large.png" class="product-img" alt="Yogurt Large">
-                <h3>حجم سبيشل</h3>
-                <p>5 إضافات مع صوص خاص</p>
-                <span class="price">7,500 IQD</span>
-                <button class="btn-order">طلب الآن</button>
+                <div class="img-wrapper">
+                    <div class="glow"></div>
+                    <img src="assets/products/yogurt-large.png" class="product-img" alt="Large Yogurt">
+                </div>
+                <h3>كوب سبيشل</h3>
+                <p>وجبة متكاملة بـ 5 إضافات وصوص مميز</p>
+                <span class="price-tag">7,500 IQD</span>
+                <button class="order-btn">اطلب الآن</button>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>جميع الحقوق محفوظة لـ Nice Girl © 2024</p>
-        <p>كربلاء - بانوراما مول</p>
+        <h2 style="margin-bottom: 20px;">Nice Girl</h2>
+        <p>كربلاء - بانوراما مول - الطابق الأرضي</p>
+        <p style="opacity: 0.6; margin-top: 40px;">تصميم احترافي © 2026</p>
     </footer>
 
     <script>
-        // تأثير ظهور العناصر عند التمرير
-        const cards = document.querySelectorAll('.card');
-        const observer = new IntersectionObserver(entries => {
+        // تأثير تحريك الصور مع حركة الفأرة (Parallax Effect)
+        document.addEventListener('mousemove', (e) => {
+            const imgs = document.querySelectorAll('.product-img');
+            const x = (window.innerWidth - e.pageX * 2) / 100;
+            const y = (window.innerHeight - e.pageY * 2) / 100;
+
+            imgs.forEach(img => {
+                img.style.transform = `translateX(${x}px) translateY(${y}px) rotate(${x/2}deg)`;
+            });
+        });
+
+        // تأثير الظهور التدريجي عند التمرير
+        const observerOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
 
-        cards.forEach(card => {
-            card.style.opacity = 0;
-            card.style.transform = 'translateY(50px)';
-            card.style.transition = 'all 0.6s ease-out';
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(40px)";
             observer.observe(card);
         });
     </script>
